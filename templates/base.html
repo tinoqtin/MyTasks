@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>{{ escape(handler.settings["contact_title"]) }}</title>
+    <link rel="stylesheet" href="{{ static_url('css/site.css') }}" type="text/css"/>
+    <script type="text/javascript" src="{{ static_url('js/jquery.min.js') }}"></script>
+    {% block head %}{% end %}
+</head>
+<body>
+    <div id="body">
+        <div id="header">
+            <h3 style="float:left">{{ escape(handler.settings["contact_title"]) }}</h3>
+            <p id="status_bar" style="float: right;">
+             {% if current_user %}
+                <span>您好:<b>{{ current_user.Name }}</b></span>
+                <a href="/my">计划(0)</a>
+                <a href="/modify">设置</a>|
+                <a href="/logout">注销</a>
+            {% else %}
+                <a href="/login">登录</a>
+            {% end %}
+            </p>
+            <div style="clear:both"></div>
+        </div>
+        <div id="content">{% block body %}{% end %}</div>
+    </div>
+    {% block bottom %}{% end %}
+</body>
+</html>

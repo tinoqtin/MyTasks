@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block body %}
+    <form action="{{ request.path }}" method="post">
+        <table>
+            <tr>
+                <td>用户名</td>
+                <td><b>{{ my.Username if my else '' }}</b></td>
+            </tr>
+            <tr>
+                <td>昵称</td>
+                <td><input type="text" name="name" value="{{ my.Name if my else '' }}"/></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type="text" name="email" value="{{ my.Email if my else '' }}"/></td>
+            </tr>
+            <tr>
+                <td>手机：</td>
+                <td><input type="text" name="phone" value="{{ my.Phone if my else '' }}"/></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input type="submit" value="修改" /></td>
+            </tr>
+            {% if globals().has_key('message') and message %}
+            <tr>
+                <td></td>
+                <td>修改个人信息成功</td>
+            </tr>
+            {% end %}
+
+        </table>
+    </form>
+{% end %}
