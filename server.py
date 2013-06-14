@@ -3,16 +3,16 @@
 __author__ = 'Administrator'
 
 import os.path
-import sys
 import torndb
 import tornado.ioloop
 import tornado.web
 import tornado.options
 import tornado.httpserver
-
+import memcache
 from tornado.options import define, options
 
 from handlers.user import *
+from handlers.category import *
 
 define("port", default=8800, help="run on the given port", type=int)
 define("mysql_host", default="127.0.0.1:3306", help="mytasks database host")
@@ -25,18 +25,21 @@ class Application(tornado.web.Application):
 
     def __init__(self):
         handlers = [
-            (r"/",LoginHandler),
-            (r"/logout",LogoutHandler),
-            (r"/register",RegisterHandler),
-            (r"/modify",UserModifyHandler),
-            (r"/my",UserModifyHandler),
+            (r"/", LoginHandler),
+            (r"/logout", LogoutHandler),
+            (r"/register", RegisterHandler),
+            (r"/modify", UserModifyHandler),
+            (r"/my", UserModifyHandler),
+            (r"/category$", CategoriesHandler),
+            (r"/category/compose", CateComposeHandler),
+            (r"/category/restore", CateRestoreHandler),
         ]
-        #Application Settings
+
         settings = dict(
                 contact_title=u"My Tasks Ver 0.1",
                 template_path=os.path.join(os.path.dirname(__file__), "templates"),
                 static_path=os.path.join(os.path.dirname(__file__), "static"),
-                #ui_modules={"Contact": ContactModule, "Query": QueryModule},
+                ui_modules={"CategoriesSelect": CategoriesSelectModule},
                 #xsrf_cookies = True,
                 cookie_secret="this is my secret password",
                 login_url="/",
@@ -48,6 +51,8 @@ class Application(tornado.web.Application):
         self.db = torndb.Connection(
             host=options.mysql_host, database=options.mysql_database,
             user=options.mysql_user, password=options.mysql_password)
+
+        self.mem = memcache.Client(["localhost"], debug=False)
 
 
 def main():

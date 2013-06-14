@@ -1,0 +1,6 @@
+<select name="categoryid">
+    <option>请选择分类</option>
+    {% for cate in categories %}
+    <option value="{{ cate.Id }}" {{ "selected" if cate.Id == id else "" }} >{{ cate.Name }}</option>
+    {% end %}
+</select>

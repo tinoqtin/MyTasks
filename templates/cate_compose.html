@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+    <form action="{{ request.path }}" method="post">
+        {% if category %}
+        <input type="hidden" name="id" value="{{ category.Id}}" />
+        {% end %}
+        <table>
+            <tr>
+                <td>名称</td>
+                <td><input type="text" name="name" value="{{ category.Name if category else '' }}"/></td>
+            </tr>
+            <tr>
+                <td>位置:</td>
+                <td><input type="text" name="location" value="{{ category.Location if category else '' }}"/></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input type="submit" value="保存" /></td>
+            </tr>
+
+        </table>
+    </form>
+{% end %}

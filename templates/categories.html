@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block body %}
+   {% module CategoriesSelect(categories, 2) %}
+   <a href="/category/compose">创建分类</a>
+   <table>
+       <tr>
+           <th>名称</th>
+           <th>位置</th>
+           <th>操作</th>
+       </tr>
+       {% for cate in categories%}
+       <tr>
+           <td>{{ cate.Name }}</td>
+           <td>{{ cate.Location }}</td>
+           <td>
+               <a href="/category/compose?id={{ cate.Id }}">编辑</a>
+               <a href="/category/restore?id={{ cate.Id }}">删除</a>
+           </td>
+       </tr>
+       {% end%}
+   </table>
+{% end %}
+
