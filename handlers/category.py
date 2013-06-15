@@ -54,15 +54,15 @@ class CateRestoreHandler(BaseHandler):
 class CategoriesHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.render("categories.html",
+        self.render("category.html",
                     categories=_getCategories(self),
                     mem_categories=getMemCategories(self))
 
 
 #下拉菜单
-class CategoriesSelectModule(tornado.web.UIModule):
+class CategorySelectModule(tornado.web.UIModule):
     def render(self, categories, id=0):
-        return self.render_string("modules/categories_select.html",
+        return self.render_string("modules/category_select.html",
                                   categories=categories, id=id)
 
 

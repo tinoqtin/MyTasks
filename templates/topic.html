@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+   <a href="/topic/compose">创建主题</a>
+   <table>
+       <tr>
+           <th>名称</th>
+           <th>类别</th>
+           <th>操作</th>
+       </tr>
+       {% for t in topics %}
+       <tr>
+           <td>{{ t.Name }}</td>
+           <td>{{ t.CategoryName }}</td>
+           <td>
+               <a href="/task/compose?id={{ t.Id }}">编辑</a>
+               <a href="/task/restore?id={{ t.Id }}">删除</a>
+           </td>
+       </tr>
+       {% end%}
+   </table>
+{% end %}
+

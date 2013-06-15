@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+    <form action="{{ request.path }}" method="post">
+        {% if task %}
+        <input type="hidden" name="id" value="{{ task.Id }}" />
+        {% end %}
+        <table>
+            <tr>
+                <td>名称</td>
+                <td><input type="text" name="name" value="{{ task.Name if task else '' }}"/></td>
+            </tr>
+            <tr>
+                <td>主题：</td>
+                <td>{% module TopicSelect(mem_topics, task.TopicId if task else 0) %}</td>
+            </tr>
+            <tr>
+                <td>截止日期:</td>
+                <td><input type="text" name="deadline" value="{{ task.Deadline if task else '' }}"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="保存" /></td>
+            </tr>
+
+        </table>
+    </form>
+{% end %}

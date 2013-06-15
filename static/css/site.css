@@ -3,3 +3,17 @@
     margin: 0px;
     padding: 0px;
 }
+
+table
+{
+    width:100%
+}
+table th
+{
+    text-align: left;
+}
+table td
+{
+    line-height:25px;
+    height:25px;
+}

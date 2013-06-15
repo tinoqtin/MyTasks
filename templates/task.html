@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+   <a href="/task/compose">创建任务</a>
+   <table>
+       <tr>
+           <th>名称</th>
+           <th>类别</th>
+           <th>过期</th>
+           <th>操作</th>
+       </tr>
+       {% for t in tasks %}
+       <tr>
+           <td>{{ t.Name }}</td>
+           <td>{{ t.TopicName }}</td>
+           <td>{{ t.Deadline }}</td>
+           <td>
+               <a href="/task/compose?id={{ t.Id }}">编辑</a>
+               <a href="/task/restore?id={{ t.Id }}">删除</a>
+           </td>
+       </tr>
+       <tr>
+          <td colspan="3">
+              <a href="javascript:void(0)">Done</a>
+              <a href="javascript:void(0)">Cancel</a>
+          </td>
+       </tr>
+       {% end%}
+   </table>
+{% end %}
+

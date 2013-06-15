@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+    <form action="{{ request.path }}" method="post">
+        {% if topic %}
+        <input type="hidden" name="id" value="{{ topic.Id}}" />
+        {% end %}
+        <table>
+            <tr>
+                <td>名称</td>
+                <td><input type="text" name="name" value="{{ topic.Name if topic else '' }}"/></td>
+            </tr>
+            <tr>
+                <td>分类:</td>
+                <td> {% module CategorySelect( mem_categories, topic.CategoryId if topic else 0 ) %}</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input type="submit" value="保存" /></td>
+            </tr>
+
+        </table>
+    </form>
+{% end %}

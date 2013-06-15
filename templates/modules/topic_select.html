@@ -1,0 +1,6 @@
+<select name="topicid">
+    <option>请选择主题</option>
+    {% for t in topics %}
+    <option value="{{ t.Id }}" {{ "selected" if t.Id == id else "" }} >{{ t.Name }}</option>
+    {% end %}
+</select>

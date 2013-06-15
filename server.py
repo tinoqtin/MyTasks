@@ -13,6 +13,8 @@ from tornado.options import define, options
 
 from handlers.user import *
 from handlers.category import *
+from handlers.topic import *
+from handlers.task import *
 
 define("port", default=8800, help="run on the given port", type=int)
 define("mysql_host", default="127.0.0.1:3306", help="mytasks database host")
@@ -33,13 +35,20 @@ class Application(tornado.web.Application):
             (r"/category$", CategoriesHandler),
             (r"/category/compose", CateComposeHandler),
             (r"/category/restore", CateRestoreHandler),
+            (r"/topic$", TopicsHandler),
+            (r"/topic/compose", TopicComposeHandler),
+            (r"/topic/restore", TopicRestoreHandler),
+            (r"/task$", TasksHandler),
+            (r"/task/compose", TaskComposeHandler),
+            (r"/task/delete", TaskDeleteHandler),
         ]
 
         settings = dict(
                 contact_title=u"My Tasks Ver 0.1",
                 template_path=os.path.join(os.path.dirname(__file__), "templates"),
                 static_path=os.path.join(os.path.dirname(__file__), "static"),
-                ui_modules={"CategoriesSelect": CategoriesSelectModule},
+                ui_modules={"CategorySelect": CategorySelectModule,
+                            "TopicSelect": TopicSelectModule},
                 #xsrf_cookies = True,
                 cookie_secret="this is my secret password",
                 login_url="/",
