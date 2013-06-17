@@ -41,6 +41,8 @@ class Application(tornado.web.Application):
             (r"/task$", TasksHandler),
             (r"/task/compose", TaskComposeHandler),
             (r"/task/delete", TaskDeleteHandler),
+            (r"/task/detail", TaskDetailHandler),
+            (r"/task/ref/compose", RefComposeHandler),
         ]
 
         settings = dict(

@@ -8,7 +8,7 @@ from base import BaseHandler
 class LoginHandler(BaseHandler):
 
     def get(self):
-        if  self.get_secure_cookie("current_user"):
+        if self.get_secure_cookie("current_user"):
             self.redirect("/modify")
         self.render("login.html")
 
@@ -23,13 +23,15 @@ class LoginHandler(BaseHandler):
                            username, password)
         if not user:
             self.render("login.html", error="please check your username and password.")
-        self.set_secure_cookie("current_user",str(username))
+        self.set_secure_cookie("current_user", str(username))
         self.redirect("/modify")
 
 
 class LogoutHandler(BaseHandler):
 
     def get(self):
+        current_user = self.get_secure_cookie("current_user")
+        self.mem.delete("current_user_" + current_user)
         self.clear_cookie("current_user")
         self.redirect("/")
 
@@ -45,12 +47,6 @@ class RegisterHandler(BaseHandler):
         email = self.get_argument("email")
         phone = self.get_argument("phone")
         name = self.get_argument("name")
-
-        print username
-        print password
-        print email
-        print phone
-        print name
 
         if not username and password and email and phone and name:
             print 'error'

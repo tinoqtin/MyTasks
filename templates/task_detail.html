@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block body %}
+    <div>
+        <h2>{{ task.Name }}</h2>
+        <p>主题：{{ task.TopicName }}</p>
+        <p>过期时间：{{ task.Deadline }}</p>
+        <p>
+            <a href="javascript:void(0)">Done</a>
+            <a href="javascript:void(0)">Cancel</a>
+        </p>
+        <div>
+            <form action="/task/ref/compose" method="post">
+                <input type="hidden" name="taskid" value="{{ task.Id}}" />
+                资源：<input type="text" name="url" />
+                <input type="submit" value="添加" />
+            </form>
+        </dvi>
+        {% if references %}
+        <ul>
+            <h3>相关资源</h3>
+            {% for ref in references %}
+            <li>
+                <a href="{{ ref.Url }}" target="_blank">{{ ref.Title }}</a>
+                <a href="javascript:void(0)">删除</a>
+            </li>
+            {% end %}
+        </ul>
+        {% end %}
+    </div>
+{% end %}

@@ -4,15 +4,15 @@
     padding: 0px;
 }
 
-table
+.table-list
 {
     width:100%
 }
-table th
+.table-list th
 {
     text-align: left;
 }
-table td
+.table-list td
 {
     line-height:25px;
     height:25px;

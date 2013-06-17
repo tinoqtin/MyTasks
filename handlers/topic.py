@@ -26,7 +26,7 @@ class TopicComposeHandler(BaseHandler):
         if id:
             topic = self.db.get("select * from topics where id = %s", id)
 
-        self.render("topic_compose.html", topic=topic,mem_categories=getMemCategories(self))
+        self.render("topic_compose.html", topic=topic, mem_categories=getMemCategories(self))
 
     @tornado.web.authenticated
     def post(self):
@@ -53,6 +53,11 @@ class TopicRestoreHandler(BaseHandler):
     pass
 
 
+#下拉菜单
+class TopicSelectModule(tornado.web.UIModule):
+    def render(self, topics, id=0):
+        return self.render_string("modules/topic_select.html",
+                                  topics=topics, id=id)
 
 #下拉菜单
 class TopicSelectModule(tornado.web.UIModule):
@@ -60,20 +65,11 @@ class TopicSelectModule(tornado.web.UIModule):
         return self.render_string("modules/topic_select.html",
                                   topics=topics, id=id)
 
-#刷新缓存
-def _resetMemTopics(self):
-    topics = _getTopics(self)
-    self.mem.set("topics", topics)
 
-def getMemTopics(self):
-    mem_topics = self.mem.get("topics")
-
-    if not mem_topics:
-        current_topics = _getTopics(self)
-        self.mem.set("topics", current_topics)
-        return current_topics
-    return mem_topics
-
-
-def _getTopics(self):
-    return self.db.query("select * from topics")
+#获取主题
+def getTopics(self):
+    username = self.get_secure_cookie("current_user")
+    if username:
+        return self.db.query("select t.* from topics t inner join users u "
+                             "on t.userid = u.id where u.username = %s", username)
+    return None

@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block body %}
-   <a href="/task/compose">创建任务</a>
-   <table>
+   <a href="/task/compose">创建任务 </a>
+   <table class="table-list">
        <tr>
            <th>名称</th>
-           <th>类别</th>
+           <th>主题</th>
            <th>过期</th>
            <th>操作</th>
        </tr>
        {% for t in tasks %}
        <tr>
-           <td>{{ t.Name }}</td>
+           <td><a href="/task/detail?id={{ t.Id }}">{{ t.Name }}</a></td>
            <td>{{ t.TopicName }}</td>
            <td>{{ t.Deadline }}</td>
            <td>
@@ -19,8 +19,20 @@
                <a href="/task/restore?id={{ t.Id }}">删除</a>
            </td>
        </tr>
+       {% if t.References %}
        <tr>
-          <td colspan="3">
+           <td colsan="4">
+               <h5>资源</h5>
+               <ul>
+                   {% for ref in t.References %}
+                   <li><a href="{{ ref.Url }}" target="_blank">{{ ref.Title }}</a></li>
+                   {% end%}
+               </ul>
+           </td>
+       </tr>
+       {% end %}
+       <tr>
+          <td colspan="4">
               <a href="javascript:void(0)">Done</a>
               <a href="javascript:void(0)">Cancel</a>
           </td>
