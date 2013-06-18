@@ -10,7 +10,7 @@
        </tr>
        {% for t in topics %}
        <tr>
-           <td>{{ t.Name }}</td>
+           <td>{{ t.Name }} <b>({{ t.task_count if t.task_count else 0 }})</b></td>
            <td>{{ t.CategoryName }}</td>
            <td>
                <a href="/task/compose?id={{ t.Id }}">编辑</a>

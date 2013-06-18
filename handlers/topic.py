@@ -11,8 +11,10 @@ class TopicsHandler(BaseHandler):
     def get(self, showDeleted=False):
         userId = self.get_current_user().Id
 
-        topics = self.db.query("select t.*,c.name as CategoryName from topics t inner join categories c "
-                               "on t.CategoryId = c.Id where userid = %s", userId)
+        topics = self.db.query("select t.*,c.name as CategoryName , tk.task_count from topics t inner join "
+                               "categories c on t.CategoryId = c.Id left join "
+                               "(select count(1) as task_count, topicid from tasks group by topicid) tk "
+                               "on tk.topicid = t.id where userid = %s", userId)
 
         self.render("topic.html", topics=topics)
 
@@ -48,6 +50,7 @@ class TopicComposeHandler(BaseHandler):
             else:
                 self.render("topic_compose.html", cate={"id": id, "name": name, "categoryid": categoryId})
 
+
 #删除/恢复主题
 class TopicRestoreHandler(BaseHandler):
     pass
@@ -58,6 +61,7 @@ class TopicSelectModule(tornado.web.UIModule):
     def render(self, topics, id=0):
         return self.render_string("modules/topic_select.html",
                                   topics=topics, id=id)
+
 
 #下拉菜单
 class TopicSelectModule(tornado.web.UIModule):

@@ -8,11 +8,10 @@ from sgmllib import SGMLParser
 import urllib
 from topic import getTopics
 
-
 #任务列表
 class TasksHandler(BaseHandler):
 
-    def get(self):
+    def get(self, template="task.html"):
         userId = self.get_current_user().Id
         tasks = self.db.query("select t.*,tp.Name as TopicName from tasks t inner join topics tp on "
                               "tp.Id =  t.TopicId where tp.UserId = %s order by t.Deadline asc", userId)
@@ -30,14 +29,10 @@ class TaskDetailHandler(BaseHandler):
             task = self.db.get("select t.*,tp.Name as TopicName from tasks t inner join topics tp on "
                               "tp.Id =  t.TopicId where t.id = %s and tp.userid = %s", id, userId)
             references = self.db.query("select * from mytasks.references where taskid = %s",id)
-            for ref in references:
-                if not ref.Title:
-                    title = loadUrlTitle(ref.Url).decode("gbk").encode("utf8")
-                    self.db.execute("update mytasks.references set title = %s where id = %s",
-                                    title, ref.Id)
             self.render("task_detail.html", task=task, references=references)
         else:
             self.redirect("/task")
+
 
 #创建修改任务
 class TaskComposeHandler(BaseHandler):
@@ -104,18 +99,22 @@ class RefComposeHandler(BaseHandler):
 
         if taskId and url:
             title = loadUrlTitle(url)
-            self.db.execute("insert into mytasks.references(taskid,url,title) values (%s,%s,%s)"
-                ,taskId, url, title)
+            self.db.execute("insert into mytasks.references(taskid,url,title) values (%s,%s,%s)",
+                            taskId, url, title)
         self.redirect("/task/detail?id=" + taskId)
 
-class RefDeleteHandler(BaseHandler):
 
+class RefDeleteHandler(BaseHandler):
+    @tornado.web.authenticated
     def post(self):
         id = self.get_argument("id", None)
+        result = False
         if id:
             self.db.execute("delete from mytasks.references where id = %s", id)
-            return True
-        return False
+            result = True
+
+        self.write({"result": result})
+
 
 class URLListener(SGMLParser):
 
@@ -123,15 +122,16 @@ class URLListener(SGMLParser):
         SGMLParser.reset(self)
         self.found_title = 0
         self.title = ""
+
     def start_title(self, attrs):
        self.found_title = 1
 
     def end_title(self):
-
         self.found_title = 0
+
     def handle_data(self, text):
         if self.found_title > 0:
-            self.title = text.decode("gbk").encode("utf8")
+            self.title = text.decode("utf8").encode("utf8")
 
 
 def loadUrlTitle(url):

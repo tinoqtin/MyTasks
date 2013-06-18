@@ -21,7 +21,7 @@
             {% for ref in references %}
             <li>
                 <a href="{{ ref.Url }}" target="_blank">{{ ref.Title }}</a>
-                <a href="javascript:void(0)">删除</a>
+                <a href="javascript:void(0)" onclick="deleteItem('/task/ref/delete',{{ ref. Id }})">删除</a>
             </li>
             {% end %}
         </ul>

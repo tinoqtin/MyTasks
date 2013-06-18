@@ -28,10 +28,11 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", LoginHandler),
+            (r"/login", LoginHandler),
             (r"/logout", LogoutHandler),
             (r"/register", RegisterHandler),
             (r"/modify", UserModifyHandler),
-            (r"/my", UserModifyHandler),
+            (r"/my", TasksHandler),
             (r"/category$", CategoriesHandler),
             (r"/category/compose", CateComposeHandler),
             (r"/category/restore", CateRestoreHandler),
@@ -43,6 +44,7 @@ class Application(tornado.web.Application):
             (r"/task/delete", TaskDeleteHandler),
             (r"/task/detail", TaskDetailHandler),
             (r"/task/ref/compose", RefComposeHandler),
+            (r"/task/ref/delete", RefDeleteHandler)
         ]
 
         settings = dict(
@@ -67,11 +69,11 @@ class Application(tornado.web.Application):
 
 
 def main():
-
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
+
 
 if __name__ == "__main__":
     main()
